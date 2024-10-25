@@ -33,11 +33,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -74,18 +75,18 @@ dependencies {
 
 
     implementation("androidx.compose.material:material-icons-core")
-    // Optional - Add full set of material icons
-    implementation("androidx.compose.material:material-icons-extended")
 
     // room
     implementation("androidx.room:room-runtime:2.4.2")
     ksp("androidx.room:room-compiler:2.4.2")
 
-    implementation("com.google.dagger:hilt-android:2.48")
-    ksp("com.google.dagger:hilt-android-compiler:2.48")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 
     // Optional - Add window size utils
     implementation("androidx.compose.material3:material3-window-size-class")
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.navigation.compose)
 
     // Optional - Integration with activities
     implementation("androidx.activity:activity-compose:1.9.0")
