@@ -22,11 +22,14 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.clipPath
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
 import com.ibml.noteit.feature_note.domain.model.Note
+import com.ibml.noteit.ui.theme.Flame
 
 @Composable
 fun NoteItem(
@@ -108,4 +111,19 @@ fun NoteItem(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun showNote(){
+    NoteItem(
+        note = Note(
+            title = "Hello",
+            content = "Lorem ipsum dolor isit....",
+            color = Flame.toArgb(),
+            timestamp = System.currentTimeMillis(),
+            id = 1
+        ),
+        onDeleteClick = { print("new Message")}
+    )
 }

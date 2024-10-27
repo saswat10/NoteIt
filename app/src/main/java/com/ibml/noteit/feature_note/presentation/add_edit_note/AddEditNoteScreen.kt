@@ -1,5 +1,6 @@
 package com.ibml.noteit.feature_note.presentation.add_edit_note
 
+import android.util.Log
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -35,9 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import androidx.room.util.TableInfo.Column
 import com.ibml.noteit.feature_note.domain.model.Note
 import com.ibml.noteit.feature_note.presentation.add_edit_note.components.TransparentTextField
 import kotlinx.coroutines.flow.collectLatest
@@ -49,8 +48,8 @@ fun AddEditNoteScreen(
     noteColor: Int,
     viewModel: AddEditNoteViewModel = hiltViewModel()
 ) {
-    val titleState = viewModel.noteTitle
-    val contentState = viewModel.noteContent
+    val titleState = viewModel.noteTitle.value
+    val contentState = viewModel.noteContent.value
     val noteBackgroundAnimatable = remember {
         Animatable(
             Color(if (noteColor != -1) noteColor else viewModel.noteColor.value)
@@ -80,17 +79,16 @@ fun AddEditNoteScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { viewModel.onEvent(AddEditNoteEvent.SaveNote) },
-                modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer),
                 content = {
                     Icon(imageVector = Icons.Filled.CheckCircle, contentDescription = "Save Note")
                 }
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
-    ) {
+    ) { paddingValues ->
         Column(
             modifier = Modifier
-                .padding(it)
+                .padding(paddingValues)
                 .fillMaxSize()
                 .background(noteBackgroundAnimatable.value)
         ) {
@@ -125,6 +123,7 @@ fun AddEditNoteScreen(
                                         )
                                     )
                                 }
+                                Log.d("color", "$ColorInt")
                                 viewModel.onEvent(AddEditNoteEvent.ChangeColor(ColorInt))
                             }
                     )
@@ -133,9 +132,9 @@ fun AddEditNoteScreen(
             Spacer(Modifier.height(8.dp))
 
             TransparentTextField(
-                text = titleState.value.text,
-                hint = titleState.value.hint,
-                isHintVisible = titleState.value.isHintVisible,
+                text = titleState.text,
+                hint = titleState.hint,
+                isHintVisible = titleState.isHintVisible,
                 onValChange = {
                     viewModel.onEvent(AddEditNoteEvent.EnteredTitle(it))
                 },
@@ -149,9 +148,9 @@ fun AddEditNoteScreen(
             Spacer(Modifier.height(16.dp))
 
             TransparentTextField(
-                text = contentState.value.text,
-                hint = contentState.value.hint,
-                isHintVisible = contentState.value.isHintVisible,
+                text = contentState.text,
+                hint = contentState.hint,
+                isHintVisible = contentState.isHintVisible,
                 onValChange = {
                     viewModel.onEvent(AddEditNoteEvent.EnteredContent(it))
                 },

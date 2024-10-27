@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.List
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,6 +30,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -42,6 +44,7 @@ import com.ibml.noteit.feature_note.presentation.util.Screen
 import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotesScreen(
     navController: NavController,
@@ -62,30 +65,41 @@ fun NotesScreen(
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Note")
             }
         },
+        topBar = {
+            TopAppBar(
+                title = { Text("Your Notes") },
+                modifier = Modifier.background(MaterialTheme.colorScheme.primary),
+                actions = {
+//                    Row(modifier = Modifier.fillMaxWidth()) {
+//                        Text(
+//                            text = "Your Notes",
+//                            style = MaterialTheme.typography.headlineSmall
+//                        )
+
+                        IconButton(
+                            onClick = {
+                                viewModel.onEvent(NotesEvent.ToggleOrderSection)
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Rounded.List,
+                                contentDescription = "Sort Order"
+                            )
+                        }
+//                    }
+                },
+
+            )
+        },
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .padding(16.dp)
         ) {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    text = "Your Notes",
-                    style = MaterialTheme.typography.headlineSmall
-                )
 
-                IconButton(
-                    onClick = {
-                        viewModel.onEvent(NotesEvent.ToggleOrderSection)
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Rounded.List,
-                        contentDescription = "Sort Order"
-                    )
-                }
-            }
             AnimatedVisibility(
                 visible = state.isOrderSectionVisible,
                 enter = fadeIn() + slideInVertically(),
@@ -96,8 +110,8 @@ fun NotesScreen(
                         .fillMaxWidth()
                         .padding(8.dp),
                     noteOrder = state.noteOrder,
-                    onOrderChange = {
-                        viewModel.onEvent(NotesEvent.NotesOrder(it))
+                    onOrderChange = {noteOrder ->
+                        viewModel.onEvent(NotesEvent.NotesOrder(noteOrder))
                     },
                 )
             }
@@ -105,11 +119,7 @@ fun NotesScreen(
             Spacer(Modifier.height(8.dp))
 
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                if (state.notes.isNullOrEmpty()) {
-                    item {
-                        Text("No notes to display, Add a Note")
-                    }
-                } else {
+
                     items(state.notes) { note ->
                         NoteItem(
                             note = note,
@@ -140,4 +150,4 @@ fun NotesScreen(
         }
 
     }
-}
+

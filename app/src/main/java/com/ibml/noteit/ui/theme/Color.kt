@@ -11,8 +11,8 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 
-val Flame = Color(0xE4572E)
-val IceTrine = Color(0xF0F66E)
-val Aquamarine = Color(0x6ef0be)
-val CherryBlossom = Color(0xFFAfc5)
-val Celeste = Color(0xb5f8fe)
+val Flame = Color(0xFFE4572E)
+val IceTrine = Color(0xFFF0F66E)
+val Aquamarine = Color(0xff6ef0be)
+val CherryBlossom = Color(0xFFFFAfc5)
+val Celeste = Color(0xffb5f8fe)

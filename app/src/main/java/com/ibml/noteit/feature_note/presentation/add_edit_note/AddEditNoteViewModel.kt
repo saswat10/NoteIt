@@ -71,7 +71,7 @@ class AddEditNoteViewModel @Inject constructor(
         when(event){
             is AddEditNoteEvent.EnteredTitle -> {
                 _noteTitle.value = noteTitle.value.copy(
-                    text = noteTitle.value.text
+                    text = event.value
                 )
             }
 
@@ -84,7 +84,7 @@ class AddEditNoteViewModel @Inject constructor(
 
             is AddEditNoteEvent.EnteredContent -> {
                 _noteContent.value = noteContent.value.copy(
-                    text = noteContent.value.text
+                    text = event.value
                 )
             }
 
@@ -96,7 +96,7 @@ class AddEditNoteViewModel @Inject constructor(
             }
 
             is AddEditNoteEvent.ChangeColor -> {
-                _noteColor.value = event.color
+                _noteColor.intValue = event.color
             }
 
             is AddEditNoteEvent.SaveNote -> {
